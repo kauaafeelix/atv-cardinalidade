@@ -4,7 +4,8 @@ import com.weg.centroweg.cardinalidade.app.dto.assento.AssentoRequestDto;
 import com.weg.centroweg.cardinalidade.app.dto.assento.AssentoResponseDto;
 import com.weg.centroweg.cardinalidade.app.mapper.AssentoMapper;
 import com.weg.centroweg.cardinalidade.domain.entity.Assento;
-import com.weg.centroweg.cardinalidade.domain.repository.AssentoRepository;
+import com.weg.centroweg.cardinalidade.domain.exception.EntitadeNaoExiste;
+import com.weg.centroweg.cardinalidade.infra.repository.AssentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class AssentoService {
     public AssentoResponseDto buscarPorId(Long id){
 
         Assento assento = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("O assento não existe."));
+                .orElseThrow(() -> new EntitadeNaoExiste("O assento não existe."));
 
         return mapper.toDto(assento);
     }
@@ -46,7 +47,7 @@ public class AssentoService {
     public AssentoResponseDto atualizarAssento (Long id, AssentoRequestDto request){
 
         Assento assento = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("O assento não existe."));
+                .orElseThrow(() -> new EntitadeNaoExiste("O assento não existe."));
 
         assento.setCodigo(request.codigo());
 
@@ -58,7 +59,7 @@ public class AssentoService {
 
     public void deletarAssento (Long id){
         Assento assento = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("O assento não existe."));
+                .orElseThrow(() -> new EntitadeNaoExiste("O assento não existe."));
 
         repository.deleteById(id);
     }

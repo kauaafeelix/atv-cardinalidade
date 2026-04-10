@@ -4,7 +4,8 @@ import com.weg.centroweg.cardinalidade.app.dto.projeto.ProjetoRequestDto;
 import com.weg.centroweg.cardinalidade.app.dto.projeto.ProjetoResponseDto;
 import com.weg.centroweg.cardinalidade.app.mapper.ProjetoMapper;
 import com.weg.centroweg.cardinalidade.domain.entity.Projeto;
-import com.weg.centroweg.cardinalidade.domain.repository.ProjetoRepository;
+import com.weg.centroweg.cardinalidade.domain.exception.EntitadeNaoExiste;
+import com.weg.centroweg.cardinalidade.infra.repository.ProjetoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class ProjetoService {
     public ProjetoResponseDto buscarPorId (Long id){
 
         Projeto projeto = repository.findById(id)
-                .orElseThrow(()-> new RuntimeException("O projeto não existe."));
+                .orElseThrow(()-> new EntitadeNaoExiste("O projeto não existe."));
 
         return mapper.toDto(projeto);
     }
@@ -46,7 +47,7 @@ public class ProjetoService {
     public ProjetoResponseDto atualizar (Long id, ProjetoRequestDto request){
 
         Projeto projeto = repository.findById(id)
-                .orElseThrow(()-> new RuntimeException("O projeto não existe."));
+                .orElseThrow(()-> new EntitadeNaoExiste("O projeto não existe."));
 
         projeto.setNome(request.nome());
 
@@ -57,7 +58,7 @@ public class ProjetoService {
 
     public void deletar (Long id){
         Projeto projeto = repository.findById(id)
-                .orElseThrow(()-> new RuntimeException("O projeto não existe."));
+                .orElseThrow(()-> new EntitadeNaoExiste("O projeto não existe."));
 
         repository.deleteById(id);
     }
